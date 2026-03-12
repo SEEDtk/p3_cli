@@ -5,6 +5,10 @@
 Retrieve a genome group from a patric workspace. Use the C<--title> option to specify the output column header.
 A value of C<none> will omit the header; the default is the group name followed by C<genome_id>.
 
+If group-name starts with a /, the genome group will be located using that path. Otherwise it will be 
+read from in the folder Genome Groups in the user's default workspace.
+
+
 =cut
 use strict;
 use Getopt::Long::Descriptive;
@@ -33,8 +37,21 @@ my $ws = P3WorkspaceClientExt->new();
 if (! $ws->{token}) {
     die "You must login with p3-login.";
 }
-my $home = $ws->home_workspace;
-my $group_path = "$home/Genome Groups/$group";
+
+#
+# If genome group is a full path, use that path instead of
+# defaulting to the Genome Groups folder.
+#
+my $group_path;
+if ($group =~ m,^/,)
+{
+    $group_path = $group;
+}
+else
+{
+    my $home = $ws->home_workspace;
+    $group_path = "$home/Genome Groups/$group";
+}
 
 my $raw_group = $ws->get({ objects => [$group_path] });
 my($meta, $data_txt) = @{$raw_group->[0]};

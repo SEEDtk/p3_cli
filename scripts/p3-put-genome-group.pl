@@ -6,6 +6,9 @@ Push ids to a Patric genome-group. The standard input should be a tab-delimited 
 The standard input can be specified using L<P3Utils/ih_options> and the input column using L<P3Utils/col_options>.
 Specify C<--show-error> to get verbose error messages. The specified genome IDs will be replace whatever is in the
 named group. If the group does not exist, it will be created.
+   
+If groupname starts with a /, the genome group will be created using that path. Otherwise it will be 
+created in the folder Genome Groups in the user's default workspace.
 
 =cut
 
@@ -28,8 +31,20 @@ if (! $ws->{token}) {
     die "You must login with p3-login.";
 }
 
-my $home = $ws->home_workspace;
-my $group_path = "$home/Genome Groups/$group";
+#
+# If genome group is a full path, use that path instead of
+# defaulting to the Genome Groups folder.
+#
+my $group_path;
+if ($group =~ m,^/,)
+{
+    $group_path = $group;
+}
+else
+{
+    my $home = $ws->home_workspace;
+    $group_path = "$home/Genome Groups/$group";
+}
 
 my $lines = 0;
 my $ih = P3Utils::ih($opt);
