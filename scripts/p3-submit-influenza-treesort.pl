@@ -196,7 +196,7 @@ for my $seg (keys %segments) {
     }
 }
 # Format the segment names for the service.
-my $formattedNames = join(",", List::Util::sort { $a cmp $b } keys %segments);
+my $formattedNames = join(",", sort { $a cmp $b } keys %segments);
 
 # Validate the tuning parameters.
 
@@ -234,8 +234,13 @@ my $params = {
     output_path => $outputPath,
     output_file => $outputFile,
     input_fasta_file_id => $realFastaFileName,
-    clock => $clock,
+    equal_rates => $clock,
     no_collapse => $noCollapse,
+    match_regex => undef,
+    input_fasta_data => undef,
+    input_fasta_existing_dataset => undef,
+    input_fasta_group_id => undef,
+    match_regex => undef
 };
 
 # Submit the job.
