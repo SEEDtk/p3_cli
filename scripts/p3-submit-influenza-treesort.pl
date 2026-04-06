@@ -139,7 +139,7 @@ use constant SEGMENT_NAMES => { "PB2" => 1, "PB1" => 1, "PA" => 1, "HA" => 1, "N
 
 use constant METHOD_NAMES => { local => 1, mincut => 1 };
 
-use constant INF_NAMES => { FastTree => 1, "IQ-Tree" => 1 };
+use constant INF_NAMES => { FastTree => 1, "IQTree" => 1 };
 
 # Insure we're logged in.
 my $p3token = P3AuthToken->new();
